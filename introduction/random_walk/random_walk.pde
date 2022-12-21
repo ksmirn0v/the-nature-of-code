@@ -3,8 +3,8 @@ class Walker {
   int y;
   
   Walker() {
-    x = width/2;
-    y = height/2;
+    this.x = width/2;
+    this.y = height/2;
   }
   
   void display() {
@@ -13,16 +13,10 @@ class Walker {
   }
   
   void step() {
-    int choice = int(random(4));
-    if (choice == 0) {
-      x++;  
-    } else if (choice == 1) {
-      x--; 
-    } else if (choice == 2) {
-      y++;
-    } else {
-      y--;
-    }
+    int stepx = int(random(3)) - 1;
+    int stepy = int(random(3)) - 1;
+    this.x += stepx;
+    this.y += stepy;
   }
 }
 
