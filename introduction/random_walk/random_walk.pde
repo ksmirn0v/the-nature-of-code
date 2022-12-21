@@ -1,22 +1,26 @@
 class Walker {
   float x;
   float y;
+  float tx;
+  float ty;
   
   Walker() {
+    this.tx = 0;
+    this.ty = 10000;
     this.x = width/2;
     this.y = height/2;
   }
   
   void display() {
     stroke(0);
-    point(x,y);
+    point(this.x, this.y);
   }
   
   void step() {
-    float stepx = random(-1, 1);
-    float stepy = random(-1, 1);
-    this.x += stepx;
-    this.y += stepy;
+    this.x = map(noise(tx), 0, 1, 0, width);
+    this.y = map(noise(ty), 0, 1, 0, height);
+    this.tx += 0.01;
+    this.ty += 0.01;
   }
 }
 
