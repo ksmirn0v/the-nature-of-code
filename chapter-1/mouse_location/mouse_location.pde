@@ -10,6 +10,10 @@ void draw() {
   
   mouse.sub(center);
   
+  float magnitude = mouse.mag();
+  fill(0);
+  rect(0, 0, magnitude, 10);
+  
   translate(width/2, height/2);
   line(0, 0, mouse.x, mouse.y);
 }
