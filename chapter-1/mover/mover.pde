@@ -2,13 +2,17 @@ final class Mover {
   
   private PVector location;
   private PVector velocity;
+  private PVector acceleration;
   
   public Mover() {
-    this.location = new PVector(random(width), random(height));
-    this.velocity = new PVector(random(-2, 2), random(-2, 2));
+    this.location = new PVector(width/2, height/2);
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(-0.001, 0.01);
   }
   
   public void update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(10);
     this.location.add(this.velocity);
   }
   
