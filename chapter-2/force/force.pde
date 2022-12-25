@@ -1,9 +1,9 @@
 final class Mover {
   
-  private PVector location;
-  private PVector velocity;
-  private PVector acceleration;
-  private float mass;
+  public PVector location;
+  public PVector velocity;
+  public PVector acceleration;
+  public float mass;
   
   public Mover(float mass, float x, float y) {
     this.location = new PVector(x, y);
@@ -58,7 +58,7 @@ void setup() {
 void draw() {
   background(255);
   for (int i = 0; i < movers.length; i++) {
-    movers[i].applyForce(gravityForce);
+    movers[i].applyForce(new PVector(0, gravityForce.y * movers[i].mass));
     if (mousePressed) {
       movers[i].applyForce(windForce);  
     }
