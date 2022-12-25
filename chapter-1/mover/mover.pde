@@ -7,10 +7,10 @@ final class Mover {
   public Mover() {
     this.location = new PVector(width/2, height/2);
     this.velocity = new PVector(0, 0);
-    this.acceleration = new PVector(-0.001, 0.01);
   }
   
   public void update() {
+    this.acceleration = PVector.random2D().mult(random(2));
     this.velocity.add(this.acceleration);
     this.velocity.limit(10);
     this.location.add(this.velocity);
