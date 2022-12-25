@@ -47,6 +47,7 @@ final class Mover {
 Mover[] movers = new Mover[20];
 PVector gravityForce = new PVector(0, 0.1);
 PVector windForce = new PVector(1.0, 0);
+float friction_coefficient = 0.01;
 
 void setup() {
   size(640, 360);
@@ -62,8 +63,17 @@ void draw() {
     if (mousePressed) {
       movers[i].applyForce(windForce);  
     }
+    movers[i].applyForce(getFrictionForce(movers[i]));
     movers[i].update();
     movers[i].checkEdges();
     movers[i].display();
   }
+}
+
+PVector getFrictionForce(Mover mover) {
+   PVector frictionForce = mover.velocity.copy();
+   frictionForce.mult(-1);
+   frictionForce.normalize();
+   frictionForce.mult(friction_coefficient);
+   return frictionForce;
 }
