@@ -72,6 +72,9 @@ void draw() {
   background(255);
   for (int i = 0; i < movers.length; i++) {
     for (int j = 0; j < movers.length; j++) {
+      if (i == j) { 
+        continue;  
+      }
       PVector force = movers[j].attract(movers[i]);
       movers[i].applyForce(force);
     }
