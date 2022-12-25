@@ -4,12 +4,14 @@ final class Mover {
   public PVector velocity;
   public PVector acceleration;
   public float mass;
+  public float coef;
   
   public Mover(float mass, float x, float y) {
     this.location = new PVector(x, y);
     this.velocity = new PVector(0, 0);
     this.acceleration = new PVector(0, 0);
     this.mass = mass;
+    this.coef = 0.4;
   }
   
   public void applyForce(PVector force) {
@@ -42,20 +44,6 @@ final class Mover {
       this.location.y = height;
     }
   }
-}
-
-
-class Attractor {
-
-  public PVector location;
-  public float mass;
-  public float coef;
-  
-  public Attractor() {
-    this.location = new PVector(width/2, height/2);
-    this.mass = 20.0;
-    this.coef = 0.4;
-  }
   
   public PVector attract(Mover mover) {
     PVector force = PVector.sub(this.location, mover.location);
@@ -66,22 +54,14 @@ class Attractor {
     force.mult(strength);
     return force;
   }
-  
-  void display() {
-    stroke(0);
-    fill(175, 200);
-    ellipse(this.location.x, this.location.y, this.mass * 2, this.mass * 2);
-  }
 }
 
 
 Mover[] movers = new Mover[20];
-Attractor attractor;
 
 
 void setup() {
   size(640, 360);
-  attractor = new Attractor();
   for (int i = 0; i < movers.length; i++) {
     movers[i] = new Mover(random(0.1, 5.0), random(width), random(height));
   }
@@ -91,11 +71,12 @@ void setup() {
 void draw() {
   background(255);
   for (int i = 0; i < movers.length; i++) {
-    PVector force = attractor.attract(movers[i]);
-    movers[i].applyForce(force);
+    for (int j = 0; j < movers.length; j++) {
+      PVector force = movers[j].attract(movers[i]);
+      movers[i].applyForce(force);
+    }
     movers[i].update();
     movers[i].checkEdges();
-    movers[i].display();
+    movers[i].display(); 
   }
-  attractor.display();
 }
