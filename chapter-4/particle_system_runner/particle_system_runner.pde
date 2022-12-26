@@ -1,14 +1,21 @@
-ParticleSystem particleSystem;
+ArrayList<ParticleSystem> systems;
 
 
 void setup() {
   size(800, 600);
-  particleSystem = new ParticleSystem(new PVector(width/2, 10));
+  systems = new ArrayList<ParticleSystem>();
+}
+
+
+void mousePressed() {
+  systems.add(new ParticleSystem(new PVector(mouseX, mouseY))); 
 }
 
 
 void draw() {
   background(255);
-  particleSystem.addParticle();
-  particleSystem.run();
+  for (ParticleSystem system: systems) {
+    system.addParticle();
+    system.run();
+  }
 }
