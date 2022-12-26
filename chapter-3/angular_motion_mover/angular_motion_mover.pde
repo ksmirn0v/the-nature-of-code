@@ -19,6 +19,8 @@ void draw() {
       PVector gravitational_force = compute_gravitational_force(movers[i], movers[j]);
       movers[i].applyForce(gravitational_force);
     }
+    PVector gravitational_force = compute_gravitational_force_towards_center(movers[i]);
+    movers[i].applyForce(gravitational_force);
     movers[i].update();
     movers[i].display();
   }
