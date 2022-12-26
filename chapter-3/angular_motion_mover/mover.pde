@@ -23,7 +23,7 @@ class Mover {
     this.velocity.add(this.acceleration);
     this.location.add(this.velocity);
     
-    this.angle_acceleration = this.acceleration.x / 10.0;
+    this.angle_acceleration = this.velocity.heading() / 10.0;
     this.angle_velocity += this.angle_acceleration;
     this.angle_velocity = constrain(this.angle_velocity, -0.1, 0.1);
     this.angle += this.angle_velocity;
