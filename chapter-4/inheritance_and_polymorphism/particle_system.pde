@@ -17,6 +17,13 @@ class ParticleSystem {
     }
   }
   
+  void applyRepeller(Repeller repeller) {
+    for (Particle particle: this.particles) {
+       PVector force = repeller.repel(particle);
+       particle.applyForce(force);
+    }
+  }
+  
   void addParticle() {
     float choice = random(1);
     if (choice < 0.5) {
