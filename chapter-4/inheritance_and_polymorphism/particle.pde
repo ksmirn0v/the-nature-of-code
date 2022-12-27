@@ -1,15 +1,19 @@
 class Particle {
   
   PVector location;
-  PVector velocity;
-  PVector acceleration;
-  float lifespan;
+  PVector velocity = new PVector(random(-1, 1), random(-2, 0));;
+  PVector acceleration = new PVector();
+  float lifespan = 255.0;
+  float mass;
   
-  Particle(PVector location) {
+  Particle(PVector location, float mass) {
     this.location = location.copy();
-    this.velocity = new PVector(random(-1, 1), random(-2, 0));
-    this.acceleration = new PVector(0, 0.05);
-    this.lifespan = 255.0;   
+    this.mass = mass;
+  }
+  
+  void applyForce(PVector force) {
+    PVector forceAdjusted = PVector.div(force, this.mass);
+    this.acceleration.add(forceAdjusted);
   }
   
   void run() {
@@ -20,6 +24,7 @@ class Particle {
   void update() {
     this.velocity.add(acceleration);
     this.location.add(velocity);
+    this.acceleration.mult(0.0);
     this.lifespan -= 2.0;
   }
   
@@ -37,8 +42,8 @@ class Particle {
 
 class Confetti extends Particle {
   
-  Confetti(PVector location) {
-    super(location);
+  Confetti(PVector location, float mass) {
+    super(location, mass);
   }
   
   void display() {

@@ -14,7 +14,9 @@ void mousePressed() {
 
 void draw() {
   background(255);
+  PVector gravity = new PVector(0, 0.1);
   for (ParticleSystem system: systems) {
+    system.applyForce(gravity);
     system.addParticle();
     system.run();
   }

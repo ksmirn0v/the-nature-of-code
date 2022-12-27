@@ -11,12 +11,18 @@ class ParticleSystem {
     this.particles = new ArrayList<Particle>();
   }
   
+  void applyForce(PVector force) {
+    for (Particle particle: this.particles) {
+      particle.applyForce(force);  
+    }
+  }
+  
   void addParticle() {
     float choice = random(1);
     if (choice < 0.5) {
-      this.particles.add(new Particle(this.origin));
+      this.particles.add(new Particle(this.origin, 1.0));
     } else {
-      this.particles.add(new Confetti(this.origin)); 
+      this.particles.add(new Confetti(this.origin, 1.0)); 
     }
   }
   
