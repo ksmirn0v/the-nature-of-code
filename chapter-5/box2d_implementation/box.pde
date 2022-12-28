@@ -19,9 +19,9 @@ class Box {
     bodyDef.angularDamping  = 0.9;
     bodyDef.bullet = true;
     
-    body = box2d.createBody(bodyDef);
-    body.setLinearVelocity(new Vec2(0,3));
-    body.setAngularVelocity(1.2);
+    this.body = box2d.createBody(bodyDef);
+    this.body.setLinearVelocity(new Vec2(0,3));
+    this.body.setAngularVelocity(1.2);
     
     PolygonShape polygonShape = new PolygonShape();
     float shapeWidth = box2d.scalarPixelsToWorld(this.objWidth/2);
@@ -34,7 +34,7 @@ class Box {
     fixtureDef.restitution = 0.5;
     fixtureDef.density = 1.0;
     
-    body.createFixture(fixtureDef);
+    this.body.createFixture(fixtureDef);
   }
   
   void display() {
