@@ -5,6 +5,7 @@ import toxi.physics2d.behaviors.*;
 
 VerletPhysics2D physics;
 Cluster cluster;
+VerletParticle2D attractor;
 float spring_length = 100.0;
 int node_count = 20;
 float spring_strength = 0.01;
@@ -30,6 +31,13 @@ void setup() {
       physics.addSpring(new VerletSpring2D(node_source, node_target, spring_length, spring_strength));
     }
   }
+  
+  attractor = new VerletParticle2D(new Vec2D(width/2, height/2));
+  float attraction_distance = height;
+  float attraction_strength = 1.0;
+  AttractionBehavior2D behavior = new AttractionBehavior2D(attractor, attraction_distance, attraction_strength);
+  physics.addBehavior(behavior);
+  attractor.lock();
 }
 
 
