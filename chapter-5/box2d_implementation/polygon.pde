@@ -1,16 +1,11 @@
-import org.jbox2d.common.*;
-import org.jbox2d.dynamics.*;
-import org.jbox2d.collision.shapes.*;
-
-
-class Box {
+class Polygon extends Box {
   
   Body body;
   float objWidth = 16.0;
   float objHeight = 16.0;
   
-  Box(float xPos, float yPos) {
-    this.initialize(xPos, yPos); 
+  Polygon(float xPos, float yPos) {
+    super(xPos, yPos);
   }
   
   void initialize(float xPos, float yPos) {
@@ -28,9 +23,12 @@ class Box {
     this.body.setAngularVelocity(1.2);
     
     PolygonShape polygonShape = new PolygonShape();
-    float shapeWidth = box2d.scalarPixelsToWorld(this.objWidth/2);
-    float shapeHeight = box2d.scalarPixelsToWorld(this.objHeight/2);
-    polygonShape.setAsBox(shapeWidth, shapeHeight);
+    Vec2[] vertices = new Vec2[4];
+    vertices[0] = box2d.vectorPixelsToWorld(new Vec2(-15.0, 25.0));
+    vertices[1] = box2d.vectorPixelsToWorld(new Vec2(15.0, 0.0));
+    vertices[2] = box2d.vectorPixelsToWorld(new Vec2(20.0, -15.0));
+    vertices[3] = box2d.vectorPixelsToWorld(new Vec2(-10.0, -10.0));
+    polygonShape.set(vertices, vertices.length);
     
     FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.shape = polygonShape;
@@ -45,13 +43,21 @@ class Box {
     Vec2 position = box2d.getBodyPixelCoord(this.body);
     float angle = -this.body.getAngle();
     
+    Fixture fixture = this.body.getFixtureList();
+    PolygonShape polygonShape = (PolygonShape) fixture.getShape();
+    
     pushMatrix();
     translate(position.x, position.y);
     rotate(angle);
     fill(175);
     stroke(0);
     rectMode(CENTER);
-    rect(0.0, 0.0, this.objWidth, this.objHeight);
+    beginShape();
+    for (int i = 0; i < polygonShape.getVertexCount(); i++) {
+      Vec2 v = box2d.vectorWorldToPixels(polygonShape.getVertex(i));
+      vertex(v.x, v.y);
+    }
+    endShape(CLOSE);
     popMatrix();
   }
   

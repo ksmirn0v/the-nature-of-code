@@ -25,7 +25,13 @@ void draw() {
   box2d.step();
   
   if (mousePressed) {
-    Box box = new Box(mouseX, mouseY);
+    Box box;
+    float value = random(0, 1);
+    if (value < 0.5) {
+      box = new Box(mouseX, mouseY);   
+    } else {
+      box = new Polygon(mouseX, mouseY); 
+    }
     boxes.add(box);
   }
   
