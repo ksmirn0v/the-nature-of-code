@@ -28,8 +28,19 @@ class Vehicle {
   }
   
   void seek(PVector target) {
-    PVector desiredVelocityDir = PVector.sub(target, this.location);
-    desiredVelocityDir.mult(0.05);
+    PVector desiredVelocityDir;
+    if (this.location.x < 50.0) {
+      desiredVelocityDir = new PVector(this.maxSpeed, this.velocity.y);
+    } else if (this.location.x > width - 50.0) {
+      desiredVelocityDir = new PVector(-this.maxSpeed, this.velocity.y); 
+    } else if (this.location.y < 50.0) {
+      desiredVelocityDir = new PVector(this.velocity.x, this.maxSpeed); 
+    } else if (this.location.y > height - 50.0) {
+      desiredVelocityDir = new PVector(this.velocity.x, -this.maxSpeed); 
+    } else {
+      desiredVelocityDir = PVector.sub(target, this.location);
+      desiredVelocityDir.mult(0.05);
+    }
     desiredVelocityDir.limit(this.maxSpeed);
     PVector steerForce = PVector.sub(desiredVelocityDir, this.velocity);
     steerForce.limit(maxForce);
