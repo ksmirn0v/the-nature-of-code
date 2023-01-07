@@ -1,21 +1,33 @@
 class Path {
   
-  PVector start;
-  PVector end;
+  ArrayList<PVector> points;
   float radius;
   
   Path() {
-    this.start = new PVector(0, height/3);
-    this.end = new PVector(width, 2*height/3);
+    this.points = new ArrayList<PVector>();
     this.radius = 20.0;
+  }
+  
+  void addPoint(float x, float y) {
+    PVector point = new PVector(x, y);
+    this.points.add(point);
   }
   
   void display() {
     strokeWeight(this.radius * 2);
     stroke(0, 100);
-    line(this.start.x, this.start.y, this.end.x, this.end.y);
+    noFill();
+    beginShape();
+    for (PVector point: this.points) {
+      vertex(point.x, point.y); 
+    }
+    endShape();
     strokeWeight(1);
     stroke(0);
-    line(this.start.x, this.start.y, this.end.x, this.end.y);
+    beginShape();
+    for (PVector point: this.points) {
+      vertex(point.x, point.y); 
+    }
+    endShape();
   }
 }

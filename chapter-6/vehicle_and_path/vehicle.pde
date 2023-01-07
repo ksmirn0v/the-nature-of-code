@@ -53,17 +53,31 @@ class Vehicle {
     currentVelocity.mult(25.0);
     PVector locationPredicted = PVector.add(this.location, currentVelocity);
     
-    PVector start = path.start;
-    PVector end = path.end;
-    PVector normalPoint = getNormalPoint(locationPredicted, start, end);
+    float minDistance = 100000000000000.0;
+    PVector finalNormalPoint = new PVector();
+    int idxInterval = 0;
+    for (int i = 0; i < path.points.size() - 1; i++) {
+      PVector start = path.points.get(i);
+      PVector end = path.points.get(i+1);
+      PVector normalPoint = getNormalPoint(locationPredicted, start, end);
+      if (normalPoint.x < start.x || normalPoint.x > end.x) {
+        normalPoint = end.copy();
+      }
+      
+      float distance = PVector.dist(normalPoint, locationPredicted);
+      if (distance < minDistance) {
+        minDistance = distance;
+        finalNormalPoint = normalPoint.copy();
+        idxInterval = i;
+      }
+    }
     
-    PVector pathDirection = PVector.sub(end, start);
+    PVector pathDirection = PVector.sub(path.points.get(idxInterval+1), path.points.get(idxInterval));
     pathDirection.normalize();
     pathDirection.mult(10.0);
-    PVector target = PVector.add(normalPoint, pathDirection);
+    PVector target = PVector.add(finalNormalPoint, pathDirection);
     
-    float distance = PVector.dist(normalPoint, locationPredicted);
-    if (distance > path.radius) {
+    if (minDistance > path.radius) {
       this.seek(target); 
     }
   }
