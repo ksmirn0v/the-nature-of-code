@@ -13,8 +13,7 @@ void setup() {
 void draw() {
    background(255);
    for (Vehicle vehicle: vehicles) {
-     vehicle.seek(new PVector(mouseX, mouseY));
-     vehicle.separate(vehicles);
+     vehicle.applyBehaviors(vehicles, new PVector(mouseX, mouseY));
      vehicle.update();
      vehicle.display();
    }

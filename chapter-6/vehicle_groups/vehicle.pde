@@ -27,7 +27,7 @@ class Vehicle {
     this.acceleration.add(force); 
   }
   
-  void seek(PVector target) {
+  PVector seek(PVector target) {
     PVector desiredVelocityDir;
     if (this.location.x < 50.0) {
       desiredVelocityDir = new PVector(this.maxSpeed, this.velocity.y);
@@ -44,10 +44,10 @@ class Vehicle {
     desiredVelocityDir.limit(this.maxSpeed);
     PVector steerForce = PVector.sub(desiredVelocityDir, this.velocity);
     steerForce.limit(maxForce);
-    this.applyForce(steerForce);
+    return steerForce;
   }
   
-  void separate(ArrayList<Vehicle> vehicles) {
+  PVector separate(ArrayList<Vehicle> vehicles) {
     float separationRadius = this.r * 2;
     PVector totalDiff = new PVector();
     int count = 0;
@@ -66,8 +66,18 @@ class Vehicle {
       totalDiff.mult(this.maxSpeed);
       PVector steeringForce = PVector.sub(totalDiff, this.velocity);
       steeringForce.limit(this.maxForce);
-      this.applyForce(steeringForce);
+      return steeringForce;
     }
+    return new PVector();
+  }
+  
+  void applyBehaviors(ArrayList<Vehicle> vehicles, PVector target) {
+     PVector separationForce = this.separate(vehicles);
+     PVector steeringForce = this.seek(target);
+     separationForce.mult(1.5);
+     steeringForce.mult(0.5);
+     this.applyForce(separationForce);
+     this.applyForce(steeringForce);
   }
   
   void display() {
