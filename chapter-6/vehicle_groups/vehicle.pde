@@ -13,7 +13,7 @@ class Vehicle {
     this.acceleration = new PVector(0.0, 0.0);
     this.maxSpeed = 4.0;
     this.maxForce = 0.1;
-    this.r = 9.0;
+    this.r = 5.0;
   }
   
   void update() {
@@ -71,12 +71,65 @@ class Vehicle {
     return new PVector();
   }
   
+  PVector align(ArrayList<Vehicle> vehicles) {
+    float maxDistance = 50.0;
+    PVector avgVelocity = new PVector();
+    int count = 0;
+    for (Vehicle vehicle: vehicles) {
+      float distance = PVector.dist(this.location, vehicle.location);
+      if (distance > 0 && distance < maxDistance) {
+        avgVelocity.add(vehicle.velocity);
+        count++;
+      }
+    }
+    
+    if (count > 0) {
+      avgVelocity.div(count);
+      avgVelocity.normalize();
+      avgVelocity.setMag(this.maxSpeed);
+    
+      PVector force = PVector.sub(avgVelocity, this.velocity);
+      force.limit(this.maxForce);
+      return force;
+    } else {
+      return new PVector(); 
+    }
+  }
+  
+  PVector cohere(ArrayList<Vehicle> vehicles) {
+    float maxDistance = 50.0;
+    PVector avgLocation = new PVector();
+    int count = 0;
+    for (Vehicle vehicle: vehicles) {
+      float distance = PVector.dist(this.location, vehicle.location);
+      if (distance > 0 && distance < maxDistance) {
+        avgLocation.add(vehicle.location);
+        count++;
+      }
+    }
+    
+    if (count > 0) {
+      avgLocation.div(count);
+      return this.seek(avgLocation);
+    } else {
+      return new PVector(); 
+    }
+  }
+  
   void applyBehaviors(ArrayList<Vehicle> vehicles, PVector target) {
      PVector separationForce = this.separate(vehicles);
+     PVector alignmentForce = this.align(vehicles);
+     PVector cohesionForce = this.cohere(vehicles);
      PVector steeringForce = this.seek(target);
-     separationForce.mult(1.5);
-     steeringForce.mult(0.5);
+     
+     separationForce.mult(2.0);
+     alignmentForce.mult(1.0);
+     cohesionForce.mult(1.0);
+     steeringForce.mult(1.0);
+     
      this.applyForce(separationForce);
+     this.applyForce(alignmentForce);
+     this.applyForce(cohesionForce);
      this.applyForce(steeringForce);
   }
   

@@ -4,7 +4,7 @@ ArrayList<Vehicle> vehicles;
 void setup() {
   size(1240, 800);
   vehicles = new ArrayList<Vehicle>();
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 50; i++) {
     vehicles.add(new Vehicle(random(width), random(height))); 
   }
 }
