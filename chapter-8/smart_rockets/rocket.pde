@@ -10,6 +10,7 @@ class Rocket {
   
   float radius;
   boolean hitTarget = false;
+  boolean stopped = false;
   
   Rocket(DNA dna, PVector location) {
     this.dna = dna;
@@ -32,11 +33,14 @@ class Rocket {
   void computeFitness() {
     float distance = PVector.dist(this.location, target);
     this.fitness = pow(1/distance, 2);
+    if (this.stopped) {
+     this.fitness *= 0.1;
+    }
   }
   
   void run() {
     this.checkTarget();
-    if (!hitTarget) {
+    if (!this.hitTarget && !this.stopped) {
       this.applyForce(this.dna.genes[geneCounter]);
       this.geneCounter = (this.geneCounter + 1) % this.dna.genes.length;
       this.update();
@@ -47,6 +51,14 @@ class Rocket {
   void checkTarget() {
     float distance = PVector.dist(this.location, target);
     this.hitTarget = (distance < 12.0);
+  }
+  
+  void collided() {
+    for (Obstacle obstacle: obstacles) {
+      if (obstacle.contains(this.location)) {
+        this.stopped = true; 
+      }
+    }
   }
   
   void display() {

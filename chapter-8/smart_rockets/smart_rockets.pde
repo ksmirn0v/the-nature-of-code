@@ -2,6 +2,7 @@ int lifetime;
 int lifeCounter;
 Population population;
 PVector target;
+ArrayList<Obstacle> obstacles;
 
 
 void setup() {
@@ -11,6 +12,9 @@ void setup() {
   target = new PVector(width/2, 24);
   float mutationRate = 0.01;
   population = new Population(mutationRate, 50);
+  
+  obstacles = new ArrayList<Obstacle>();
+  obstacles.add(new Obstacle(width/2 - 100, height/2, 200, 10));
 }
 
 
@@ -28,6 +32,10 @@ void draw() {
     population.computeFitness();
     population.doSelection();
     population.doReproduction();
+  }
+  
+  for (Obstacle obstacle: obstacles) {
+    obstacle.display(); 
   }
   
   fill(0);
